@@ -1,9 +1,5 @@
 <?php
-    session_start();    
-    require_once("dataset.php");
-
-    if(!isset($_SESSION['cart_count']))
-        $_SESSION['cart_count'] = 0;
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -20,20 +16,16 @@
 <body>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-8">
+            <div class="col-10">
                 <h1>
                     <i class="fa fa-store"></i>
                     Learn IT Easy Online Shop
                 </h1>
             </div>
-            <div class="col-4 text-right">
+            <div class="col-2 text-right">
                 <a href="cart.php" class="btn btn-primary">
                     <i class="fa fa-shopping-cart"></i>
                     Cart <span class="badge badge-light"><?php echo $_SESSION['cart_count']; ?></span>
-                </a>
-                <a href="login.php" class="btn btn-primary">
-                     <i class="fa-solid fa-right-to-bracket"></i>
-                        Log In
                 </a>
             </div>
             <div class="col-12">
@@ -41,28 +33,11 @@
             </div>
         </div>
         <div class="row">
-            <?php if(isset($products)): ?>
-                <?php foreach($products as $id => $product): ?>
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4">
-                        <div class="product-grid2 card">
-                            <div class="product-image2">
-                                <a href="details.php?k=<?php echo $id; ?>">
-                                    <img class="pic-1" src="uploads/<?php echo $product['photo1']; ?>">
-                                    <img class="pic-2" src="uploads/<?php echo $product['photo2']; ?>">
-                                </a>                        
-                                <a class="add-to-cart" href="details.php?k=<?php echo $id; ?>">
-                                    <i class="fa fa-cart-plus"></i> Add to cart
-                                </a>
-                            </div>
-                            <div class="product-content">
-                                <h3 class="title">
-                                <?php echo $product['name']; ?> <span class="badge badge-dark">₱ <?php echo $product['price']; ?></span>
-                                </h3>                        
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <div class="col-12">
+                <h3>Product Successfully Added to the Cart, what do you want to do next?</h3>
+                <a href="cart.php" class="btn btn-dark btn-lg"><i class="fa fa-shopping-cart"></i> View Cart</a>
+                <a href="index.php" class="btn btn-danger btn-lg"><i class="fa fa-shopping-bag"></i> Continue Shopping</a>
+            </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

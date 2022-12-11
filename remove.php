@@ -1,9 +1,12 @@
 <?php
-    session_start();    
+    session_start();
     require_once("dataset.php");
 
-    if(!isset($_SESSION['cart_count']))
-        $_SESSION['cart_count'] = 0;
+    if(isset($_POST['process'])) {        
+        unset($_SESSION['cart'][$_POST['id']][$_POST['size']]);    
+        $_SESSION['cart_count'] -= $_POST['quantity'];
+        header("location: cart.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -20,20 +23,16 @@
 <body>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-8">
+            <div class="col-10">
                 <h1>
                     <i class="fa fa-store"></i>
                     Learn IT Easy Online Shop
                 </h1>
             </div>
-            <div class="col-4 text-right">
+            <div class="col-2 text-right">
                 <a href="cart.php" class="btn btn-primary">
                     <i class="fa fa-shopping-cart"></i>
                     Cart <span class="badge badge-light"><?php echo $_SESSION['cart_count']; ?></span>
-                </a>
-                <a href="login.php" class="btn btn-primary">
-                     <i class="fa-solid fa-right-to-bracket"></i>
-                        Log In
                 </a>
             </div>
             <div class="col-12">
@@ -41,27 +40,34 @@
             </div>
         </div>
         <div class="row">
-            <?php if(isset($products)): ?>
-                <?php foreach($products as $id => $product): ?>
-                    <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4">
-                        <div class="product-grid2 card">
-                            <div class="product-image2">
-                                <a href="details.php?k=<?php echo $id; ?>">
-                                    <img class="pic-1" src="uploads/<?php echo $product['photo1']; ?>">
-                                    <img class="pic-2" src="uploads/<?php echo $product['photo2']; ?>">
-                                </a>                        
-                                <a class="add-to-cart" href="details.php?k=<?php echo $id; ?>">
-                                    <i class="fa fa-cart-plus"></i> Add to cart
-                                </a>
-                            </div>
-                            <div class="product-content">
-                                <h3 class="title">
-                                <?php echo $product['name']; ?> <span class="badge badge-dark">₱ <?php echo $product['price']; ?></span>
-                                </h3>                        
-                            </div>
+            <?php if(isset($_GET['k']) && ($_GET['k'] < count($products))): ?>                
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-4">                        
+                        <div class="product-image2">                            
+                            <img class="pic-1 w-100" src="img/<?php echo $products[$_GET['k']]['photo1']; ?>">                                                    
                         </div>
                     </div>
-                <?php endforeach; ?>
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-8 mb-4">
+                        <form method="post">
+                            <div class="product-content">
+                                <h3 class="title">
+                                    <?php echo $products[$_GET['k']]['name']; ?> <span class="badge badge-dark">₱ <?php echo $products[$_GET['k']]['price']; ?></span>
+                                </h3>                        
+                                <p><?php echo $products[$_GET['k']]['description']; ?></p>
+                                <hr>
+
+                                <input type="hidden" name="id" value="<?php echo $_GET['k']; ?>">
+                                <input type="hidden" name="size" value="<?php echo $_GET['s']; ?>">
+                                <input type="hidden" name="quantity" value="<?php echo $_GET['q']; ?>">
+                                <h3 class="title">Size: <?php echo $_GET['s']; ?></h3>                                
+                                <hr>
+                                
+                                <h3 class="title">Quantity: <?php echo $_GET['q']; ?></h3>                                
+                                <br>
+                                <button type="submit" name="process" class="btn btn-dark btn-lg"><i class="fa fa-trash"></i> Confirm Product Removal</button>
+                                <a href="cart.php" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i> Cancel / Go Back</a>
+                            </div>
+                        </form>                        
+                    </div>                                               
             <?php endif; ?>
         </div>
     </div>
